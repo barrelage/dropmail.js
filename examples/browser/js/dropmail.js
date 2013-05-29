@@ -1,0 +1,1 @@
+../../../browser/build/dropmail.js

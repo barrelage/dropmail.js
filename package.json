@@ -1,0 +1,34 @@
+{
+    "name": "dropmail"
+  , "version": "0.0.1"
+  , "description": "JavaScript client for the Dropmail API"
+  , "repository": {
+      "type": "git"
+    , "url":  "http://github.com/stephencelis/dropmail.js.git"
+  }
+  , "private": true,
+    "contributors" : [
+      "Evan Owen <kainosnoema@gmail.com"
+    , "Stephen Celis <stephencelis@gmail.com"
+  ]
+  , "keywords": []
+  , "dependencies": {
+      "request": "*"
+  }
+  , "devDependencies": {
+      "browserify":  "2.x"
+    , "es5-shimify": "*"
+    , "json2ify":    "*"
+    , "mocha":       "*"
+    , "uglify-js":   "*"
+  }
+  , "main": "index.js"
+  , "browser": {
+      "./index.js": "./browser/index.js"
+    , "request":    "./browser/shims/request.js"
+  }
+  , "scripts" : {
+      "test" : "mocha tests/*.js"
+  }
+  , "license" : "MIT"
+}
