@@ -2,8 +2,8 @@ var fs = require('fs')
   , browserify = require('browserify')
   , UglifyJS = require("uglify-js");
 
-var buildFileDebug = './browser/build/dropmail.js'
-  , buildFile      = './browser/build/dropmail.min.js'
+var buildFileDebug = './build/dropmail.js'
+  , buildFile      = './build/dropmail.min.js'
 
 browserify()
   .add('./browser')
