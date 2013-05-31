@@ -16,11 +16,11 @@
       "request": "*"
   }
   , "devDependencies": {
-      "browserify":  "2.x"
-    , "es5-shimify": "*"
-    , "json2ify":    "*"
-    , "mocha":       "*"
-    , "uglify-js":   "*"
+      "browserify": "2.x"
+    , "es5-shim":   "2.0.x"
+    , "json2ify":   "*"
+    , "mocha":      "*"
+    , "uglify-js":  "*"
   }
   , "main": "index.js"
   , "browser": {

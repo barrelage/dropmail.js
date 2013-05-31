@@ -7,7 +7,7 @@ var buildFileDebug = './build/dropmail.js'
 
 browserify()
   .add('./browser')
-  .require('es5-shimify')
+  .require('es5-shim')
   .require('json2ify')
   .bundle(function(err, src) {
   if (err) return console.error(err);
