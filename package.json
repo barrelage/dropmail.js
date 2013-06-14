@@ -16,7 +16,8 @@
       "request": "*"
   }
   , "devDependencies": {
-      "browserify": "2.x"
+      "js-base64":  "2.1.x"
+    , "browserify": "2.x"
     , "es5-shim":   "2.0.x"
     , "json2ify":   "*"
     , "mocha":      "*"

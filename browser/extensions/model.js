@@ -1,3 +1,8 @@
+
+/**
+ * Module dependancies.
+ */
+
 var Model = module.exports = require('../../lib/model');
 
 
