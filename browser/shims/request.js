@@ -9,7 +9,11 @@ module.exports = function(options, callback) {
         type: options.method || 'GET'
       , data: options.body
       , error: function(xhr, text, err) {
-          callback(text, null, null);
+          var errorBody = xhr.responseText;
+          if((xhr.getResponseHeader('Content-Type') || '').match(/json/)) {
+            errorBody = JSON.parse(errorBody);
+          }
+          callback(errorBody, null, null);
       }
       , success: function(data) {
           callback(null, data, data);
