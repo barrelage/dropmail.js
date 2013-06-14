@@ -15,6 +15,15 @@ module.exports = function(options, callback) {
           }
           callback(errorBody, null, null);
       }
+      , beforeSend: function (xhr) {
+          var auth = options.auth;
+          if (auth) {
+            var basicAuth = new Buffer(
+              auth.username + ':' + auth.password
+            ).toString('base64');
+            xhr.setRequestHeader('Authorization', 'Basic ' + basicAuth);
+          }
+      }
       , success: function(data) {
           callback(null, data, data);
       }
