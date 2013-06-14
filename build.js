@@ -9,7 +9,7 @@ browserify()
   .add('./browser')
   .require('es5-shim')
   .require('json2ify')
-  .bundle(function(err, src) {
+  .bundle({ debug: true }, function(err, src) {
   if (err) return console.error(err);
 
   fs.writeFileSync(buildFileDebug, src);
