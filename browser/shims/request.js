@@ -21,7 +21,7 @@ module.exports = function(options, callback) {
             errorBody = JSON.parse(errorBody);
           }
           if (!errorBody) errorBody = err ? err : new Error(text);
-          callback(errorBody, null, null);
+          callback(errorBody, null);
       }
       , beforeSend: function (xhr) {
           var auth = options.auth;
@@ -31,7 +31,7 @@ module.exports = function(options, callback) {
           }
       }
       , success: function(data) {
-          callback(null, data, data);
+          callback(null, data);
       }
     }
   );
