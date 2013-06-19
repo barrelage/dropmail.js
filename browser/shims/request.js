@@ -1,6 +1,6 @@
 
 /**
- * Module dependancies.
+ * Module dependencies.
  */
 
 require('js-base64');
