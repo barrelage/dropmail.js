@@ -5,7 +5,11 @@
   <script type="text/javascript">
 
     Dropmail.Model.baseURL = "http://0.0.0.0:9393";
-    Dropmail.Model.key = "3HuvnK8GM27EOp7wKWV4VeqQcHQCG9oGJiKGNAsgd5U";
+    Dropmail.authenticate("3HuvnK8GM27EOp7wKWV4VeqQcHQCG9oGJiKGNAsgd5U");
+    // Dropmail.authenticate(Dropmail.User.build({
+    //   email: "evan@dropmail.io",
+    //   password: "password1"
+    // }));
 
     var user;
     Dropmail.Organization.find("w53lsv2mq61", function(err, u) {
