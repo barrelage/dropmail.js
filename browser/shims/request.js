@@ -20,7 +20,8 @@ module.exports = function(options, callback) {
           if((xhr.getResponseHeader('Content-Type') || '').match(/json/)) {
             errorBody = JSON.parse(errorBody);
           }
-          callback(errorBody, null, null);
+          if (!errorBody) errorBody = err ? err : new Error(text);
+          callback(errorBody, null);
       }
       , beforeSend: function (xhr) {
           var auth = options.auth;
@@ -30,7 +31,7 @@ module.exports = function(options, callback) {
           }
       }
       , success: function(data) {
-          callback(null, data, data);
+          callback(null, data);
       }
     }
   );
