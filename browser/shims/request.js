@@ -20,6 +20,7 @@ module.exports = function(options, callback) {
           if((xhr.getResponseHeader('Content-Type') || '').match(/json/)) {
             errorBody = JSON.parse(errorBody);
           }
+          if (!errorBody) errorBody = err ? err : new Error(text);
           callback(errorBody, null, null);
       }
       , beforeSend: function (xhr) {
