@@ -4,22 +4,22 @@
   <script type="text/javascript" src="js/dropmail.js"></script>
   <script type="text/javascript">
 
-    Dropmail.Model.baseURL = "http://0.0.0.0:9393";
-    Dropmail.authenticate("3HuvnK8GM27EOp7wKWV4VeqQcHQCG9oGJiKGNAsgd5U");
-    // Dropmail.authenticate(Dropmail.User.build({
+    var dropmail = new Dropmail({ baseURL: "http://0.0.0.0:9393" });
+    dropmail.authenticate("3HuvnK8GM27EOp7wKWV4VeqQcHQCG9oGJiKGNAsgd5U");
+    // dropmail.authenticate(dropmail.User.build({
     //   email: "evan@dropmail.io",
     //   password: "password1"
     // }));
 
     var user;
-    Dropmail.Organization.find("w53lsv2mq61", function(err, u) {
+    dropmail.Organization.find("w53lsv2mq61", function(err, u) {
       if (err) { return handleError(err); }
       user = u;
       user.reload(function(err, u) { console.log(u); })
     });
 
     function handleError(err) {
-      if (err instanceof Dropmail.Model.ValidationError) {
+      if (err instanceof dropmail.User.ValidationError) {
         for (var name in err.attributes) {
           console.log(name, err.attributes[name].join(', '));
         }
