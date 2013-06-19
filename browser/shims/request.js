@@ -15,13 +15,12 @@ module.exports = function(options, callback) {
   $.ajax(options.uri, {
         type: options.method || 'GET'
       , data: options.body
-      , error: function(xhr, text, err) {
+      , error: function(xhr, status, err) {
           var errorBody = xhr.responseText;
           if((xhr.getResponseHeader('Content-Type') || '').match(/json/)) {
             errorBody = JSON.parse(errorBody);
           }
-          if (!errorBody) errorBody = err ? err : new Error(text);
-          callback(errorBody, null);
+          callback(errorBody || err || status, xhr);
       }
       , beforeSend: function (xhr) {
           var auth = options.auth;
@@ -30,8 +29,8 @@ module.exports = function(options, callback) {
             xhr.setRequestHeader('Authorization', 'Basic ' + basicAuth);
           }
       }
-      , success: function(data) {
-          callback(null, data);
+      , success: function(data, status, xhr) {
+          callback(null, xhr, data);
       }
     }
   );
