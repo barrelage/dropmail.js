@@ -30,7 +30,7 @@ $(DROPMAIL_JS): $(DROPMAIL_SOURCE)
 	@$(call log-success,compiled,$(1))
 
 clean:
-	rm $(DROPMAIL_JS)
+	rm -f $(DROPMAIL_JS)
 
 install: node_modules
 

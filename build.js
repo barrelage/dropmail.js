@@ -19,6 +19,7 @@ bundler.bundle({ debug: true }, function(err, src) {
 });
 
 bundler.bundle(function(err, src) {
+  if (err) return console.error(err);
   fs.writeFile(buildFile, src);
   fs.writeFile(buildFileMin, UglifyJS.minify(src, { fromString: true }).code);
 });

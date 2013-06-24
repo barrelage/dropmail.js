@@ -25,8 +25,7 @@
   }
   , "main": "index.js"
   , "browser": {
-      "./index.js": "./browser/index.js"
-    , "request":    "./browser/shims/request.js"
+      "request":    "../browser/shims/request.js"
   }
   , "scripts" : {
       "test" : "mocha tests/*.js"
