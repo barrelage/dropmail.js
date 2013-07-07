@@ -6,10 +6,6 @@
 
     var dropmail = new Dropmail({ baseURL: "http://0.0.0.0:9393" });
     dropmail.authenticate("3HuvnK8GM27EOp7wKWV4VeqQcHQCG9oGJiKGNAsgd5U");
-    // dropmail.authenticate(dropmail.User.build({
-    //   email: "evan@dropmail.io",
-    //   password: "password1"
-    // }));
 
     var user;
     dropmail.Organization.find("w53lsv2mq61", function(err, u) {
