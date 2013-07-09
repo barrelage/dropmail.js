@@ -30,7 +30,8 @@ Dropmail.prototype.startSession = function(auth, callback) {
   }
 
   var credentials = this.authenticate(auth).credentials
-    , self = this;
+    , self = this
+    , user;
 
   if (!credentials) {
     this.endSession();
