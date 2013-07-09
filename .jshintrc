@@ -1,0 +1,22 @@
+{
+    "laxbreak": true
+  , "laxcomma": true
+
+  , "camelcase": true
+  , "maxlen": 78
+  , "newcap": true
+  , "trailing": true
+
+  , "maxcomplexity": 4
+  , "maxdepth": 2
+  , "maxparams": 4
+
+  , "undef": true
+  , "unused": true
+
+  , "browser": true
+  , "jquery": true
+  , "node": true
+
+  , "strict": false
+}
