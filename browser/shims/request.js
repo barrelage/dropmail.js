@@ -6,10 +6,8 @@
 /* global Base64: true */
 require('js-base64');
 
-
 /**
  * Browser shim for mikael/request
- *
  */
 
 module.exports = function(options, callback) {
