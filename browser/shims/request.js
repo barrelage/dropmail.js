@@ -14,7 +14,8 @@ require('js-base64');
 module.exports = function(options, callback) {
   $.ajax(options.uri, {
         type: options.method || 'GET'
-      , data: options.body
+      , contentType: 'application/json; charset=utf-8'
+      , data: JSON.stringify(options.body)
       , error: function(xhr, status, err) {
           var errorBody = xhr.responseText;
           if((xhr.getResponseHeader('Content-Type') || '').match(/json/)) {
