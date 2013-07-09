@@ -86,5 +86,5 @@ Dropmail.prototype.startSession = function(auth, callback) {
 Dropmail.prototype.endSession = function() {
   cookies.expire(credentialsKey);
   store.remove(userKey);
-  self.authenticatedUser = null;
+  this.authenticatedUser = null;
 };
