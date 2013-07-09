@@ -45,6 +45,12 @@ Dropmail.prototype.startSession = function(auth, callback) {
   } else {
     var authorization = { ttl: self.options.session.expires };
     this.Authorization.save(authorization, function(err, auth) {
+      if (err) {
+        self.endSession();
+        if (callback) callback(err);
+        return;
+      }
+
       credentials = self.authenticate(auth).credentials;
       refreshUser();
     });
