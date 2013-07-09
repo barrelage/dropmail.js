@@ -1,3 +1,3 @@
-require('./extensions/model');
+require('./extensions');
 
-window.Dropmail = require('../lib/dropmail.js');
+window.Dropmail = require('../lib/dropmail');

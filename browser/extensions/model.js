@@ -18,7 +18,7 @@ Model.build = function(attributes) {
   var instance;
 
   if (attributes instanceof jQuery) {
-    var $form = $(attributes);
+    var $form = attributes;
 
     attributes = {};
     $.each($form.serializeArray(), function(){
@@ -27,7 +27,7 @@ Model.build = function(attributes) {
   }
 
   return new this(attributes);
-}
+};
 
 
 /**
@@ -49,4 +49,4 @@ Model.form = function(form, callback) {
   });
 
   return $form;
-}
+};

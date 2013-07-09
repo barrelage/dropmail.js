@@ -5,9 +5,11 @@ var fs = require('fs')
 var bundler = browserify()
   .add('./browser')
   .ignore('buffer')
+  .require('cookies-js')
   .require('es5-shim')
   .require('js-base64')
-  .require('json2ify');
+  .require('json2ify')
+  .require('store');
 
 var buildFileDebug = './build/dropmail.debug.js'
   , buildFileMin   = './build/dropmail.min.js'
