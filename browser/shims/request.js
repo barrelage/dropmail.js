@@ -5,10 +5,8 @@
 
 require('js-base64');
 
-
 /**
  * Browser shim for mikael/request
- *
  */
 
 module.exports = function(options, callback) {
@@ -26,8 +24,8 @@ module.exports = function(options, callback) {
       , beforeSend: function (xhr) {
           var auth = options.auth;
           if (auth) {
-            var basicAuth = Base64.encode(auth.username + ':' + auth.password);
-            xhr.setRequestHeader('Authorization', 'Basic ' + basicAuth);
+            var basic = Base64.encode(auth.username + ':' + auth.password);
+            xhr.setRequestHeader('Authorization', 'Basic ' + basic);
           }
       }
       , success: function(data, status, xhr) {
@@ -35,4 +33,4 @@ module.exports = function(options, callback) {
       }
     }
   );
-}
+};
