@@ -15,8 +15,6 @@ var Model = module.exports = require('../../lib/model');
  */
 
 Model.build = function(attributes) {
-  var instance;
-
   if (attributes instanceof jQuery) {
     var $form = attributes;
 
@@ -26,7 +24,8 @@ Model.build = function(attributes) {
     });
   }
 
-  return new this(attributes);
+  var Ctor = this;
+  return new Ctor(attributes);
 };
 
 

@@ -29,6 +29,9 @@ $(DROPMAIL_JS): $(DROPMAIL_SOURCE)
 	@node build
 	@$(call log-success,compiled,$(1))
 
+lint: node_modules
+	@./node_modules/.bin/jshint $(DROPMAIL_SOURCE)
+
 clean:
 	rm -f $(DROPMAIL_JS)
 
@@ -36,3 +39,5 @@ install: node_modules
 
 node_modules:
 	@npm install
+
+.PHONY: lint

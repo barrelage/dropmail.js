@@ -7,7 +7,6 @@ var Dropmail = require('../../lib/dropmail')
   , cookies = require('cookies-js')
   , store = require('store');
 
-
 /**
  * Persist a user's credentials in a cookie / local-storage session.
  *
@@ -21,14 +20,18 @@ var credentialsKey = 'dropmail.session.credentials'
   , userKey = 'dropmail.session.user';
 
 Dropmail.prototype.startSession = function(auth, callback) {
-  if (typeof auth == 'function') { callback = auth, auth = void(0); }
+  if (typeof auth == 'function') {
+    callback = auth;
+    auth = void(0);
+  }
 
   if (typeof auth == 'undefined') {
     try { auth = JSON.parse(cookies.get(credentialsKey)); } catch(e) {}
   }
 
   var credentials = this.authenticate(auth).credentials
-    , self = this;
+    , self = this
+    , user;
 
   if (!credentials) {
     this.endSession();
@@ -75,7 +78,7 @@ Dropmail.prototype.startSession = function(auth, callback) {
     var encoded = JSON.stringify(credentials);
     cookies.set(credentialsKey, encoded, self.options.session);
     store.set(userKey, user);
-    self.authenticatedUser = self.authenticatedUser || new self.User;
+    self.authenticatedUser = self.authenticatedUser || new self.User();
     self.authenticatedUser.set(user);
   }
 };
@@ -83,5 +86,5 @@ Dropmail.prototype.startSession = function(auth, callback) {
 Dropmail.prototype.endSession = function() {
   cookies.expire(credentialsKey);
   store.remove(userKey);
-  self.authenticatedUser = null;
+  this.authenticatedUser = null;
 };
