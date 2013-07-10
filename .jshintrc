@@ -19,4 +19,8 @@
   , "node": true
 
   , "strict": false
+
+  , "predef": [
+      "Base64" // js-base64
+  ]
 }

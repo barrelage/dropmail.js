@@ -3,7 +3,6 @@
  * Module dependencies.
  */
 
-/* global Base64: true */
 require('js-base64');
 
 /**
