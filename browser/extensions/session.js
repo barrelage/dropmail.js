@@ -7,6 +7,8 @@ var Dropmail = require('../../lib/dropmail')
   , cookies = require('cookies-js')
   , store = require('store');
 
+Dropmail.prototype.cookies = cookies;
+
 /**
  * Persist a user's credentials in a cookie / local-storage session.
  *
