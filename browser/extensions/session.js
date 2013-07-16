@@ -28,7 +28,7 @@ Dropmail.prototype.startSession = function(auth, callback) {
   }
 
   if (typeof auth == 'undefined') {
-    try { auth = JSON.parse(cookies.get(credentialsKey)); } catch(e) {}
+    try { auth = JSON.parse(cookies(credentialsKey)); } catch(e) {}
   }
 
   var credentials = this.authenticate(auth).credentials
@@ -78,7 +78,7 @@ Dropmail.prototype.startSession = function(auth, callback) {
 
   function persistSession(user) {
     var encoded = JSON.stringify(credentials);
-    cookies.set(credentialsKey, encoded, self.options.session);
+    cookies(credentialsKey, encoded, self.options.session);
     store.set(userKey, user);
     self.authenticatedUser = self.authenticatedUser || new self.User();
     self.authenticatedUser.set(user);
