@@ -3,14 +3,22 @@
  * Module dependencies.
  */
 
-var Dropmail = require('../../lib/dropmail')
-  , cookies = require('cookies-js')
-  , store = require('store');
+var cookies = require('cookies-js')
+  , helper = require('../../lib/helper')
+  , Dropmail = require('../../lib/dropmail');
+
+// expose the cookies module
 
 Dropmail.prototype.cookies = cookies;
 
+// the key to use when persisting the session
+
+var sessionKey = 'dropmail.session.authorization';
+
+
 /**
- * Persist a user's credentials in a cookie / local-storage session.
+ * Start a session by looking up any existing one,
+ * then creating one if needed.
  *
  * @param {String|Object|Authorization|User} auth
  * @param {Function} callback
@@ -18,75 +26,132 @@ Dropmail.prototype.cookies = cookies;
  * @api public
  */
 
-var credentialsKey = 'dropmail.session.credentials'
-  , userKey = 'dropmail.session.user';
-
 Dropmail.prototype.startSession = function(auth, callback) {
   if (typeof auth == 'function') {
     callback = auth;
     auth = void(0);
   }
 
-  if (typeof auth == 'undefined') {
-    try { auth = JSON.parse(cookies(credentialsKey)); } catch(e) {}
+  if (typeof auth !== 'undefined') {
+    this.authenticate(auth);
   }
 
-  var credentials = this.authenticate(auth).credentials
-    , self = this
-    , user;
+  var authorization = this._resumeSession()
+    , credentials = this.credentials
+    , self = this;
 
-  if (!credentials) {
+  if (!authorization && !credentials) {
     this.endSession();
     if (callback) callback(new Error('invalid credentials'));
-    return;
+    return this;
   }
 
-  if ((user = store.get(userKey))) {
-    persistSession(user);
-  }
-
-  if (credentials.key) {
-    refreshUser();
-  } else {
-    var authorization = { ttl: self.options.session.expires };
-    this.Authorization.save(authorization, function(err, auth) {
-      if (err) {
-        self.endSession();
-        if (callback) callback(err);
-        return;
-      }
-
-      credentials = self.authenticate(auth).credentials;
-      refreshUser();
-    });
+  if (authorization) {
+    refreshAuthorization(authorization);
+  } else if (credentials) {
+    if (credentials.key) {
+      refreshAuthorization(new this.Authorization(credentials));
+    } else {
+      this.createSession(callback);
+    }
   }
 
   return this;
 
-  function refreshUser() {
-    self.User.me(function(err, user){
-      if (err) {
-        self.endSession();
-        if (callback) callback(err);
-        return;
-      }
-
-      persistSession(user);
-      if (callback) callback(null, user);
-    });
-  }
-
-  function persistSession(user) {
-    var encoded = JSON.stringify(credentials);
-    cookies(credentialsKey, encoded, self.options.session);
-    store.set(userKey, user);
-    self.authenticatedUser = self.authenticatedUser || new self.User();
-    self.authenticatedUser.set(user);
+  function refreshAuthorization(authorization) {
+    self.persistSession(authorization);
+    authorization.reload(self._handleSession.bind(self, callback));
   }
 };
 
-Dropmail.prototype.endSession = function() {
-  cookies.expire(credentialsKey);
-  store.remove(userKey);
-  this.authenticatedUser = null;
+
+/**
+ * Force a new session to be created.
+ *
+ * @param {Object} options
+ * @param {Function} callback
+ * @return {Dropmail}
+ * @api public
+ */
+
+Dropmail.prototype.createSession = function(options, callback) {
+  options = options || {};
+
+  if (typeof options == 'function') {
+    callback = options;
+    options = {};
+  }
+
+  var defaults = helper.merge({ ttl: this.options.session.expires }, options)
+    , attrs = helper.merge(defaults, options);
+  this.Authorization.save(attrs, this._handleSession.bind(this, callback));
+
+  return this;
+};
+
+
+/**
+ * Save an existing authorization as the session.
+ *
+ * @param {Authorization} authorization
+ * @return {Dropmail}
+ * @api public
+ */
+
+Dropmail.prototype.persistSession = function(authorization) {
+  cookies(sessionKey, JSON.stringify(authorization), this.options.session);
+  this.authenticate(authorization);
+  this.session = this.session || new this.Authorization();
+  this.session.set(authorization);
+  this.emit('change:session', authorization);
+};
+
+
+/**
+ * End any existing session.
+ *
+ * @param {Function} callback
+ * @return {Dropmail}
+ * @api public
+ */
+
+Dropmail.prototype.endSession = function(err) {
+  cookies.expire(sessionKey);
+  this.session = null;
+  this.emit('change:session', null, err);
+};
+
+
+/**
+ * Resume a session from a cookie.
+ *
+ * @return {Authorization}
+ * @api private
+ */
+
+Dropmail.prototype._resumeSession = function() {
+  var authorization;
+  try { authorization = JSON.parse(cookies(sessionKey)); } catch(e) {}
+  return authorization && new this.Authorization(authorization);
+};
+
+
+/**
+ * Handle the response when receiving a new session.
+ *
+ * @param {Function} callback
+ * @param {Error} err
+ * @param {Authorization} auth
+ * @api private
+ */
+
+Dropmail.prototype._handleSession = function(callback, err, auth) {
+  if (err) {
+    this.endSession();
+    if (callback) callback(err);
+    return;
+  }
+
+  this.persistSession(auth);
+  if (callback) callback(null, auth);
 };
