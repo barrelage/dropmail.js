@@ -82,7 +82,7 @@ Dropmail.prototype.createSession = function(options, callback) {
     options = {};
   }
 
-  var defaults = helper.merge({ ttl: this.options.session.expires }, options)
+  var defaults = helper.merge({ ttl: 3600 }, options)
     , attrs = helper.merge(defaults, options);
   this.Authorization.save(attrs, this._handleSession.bind(this, callback));
 
@@ -99,7 +99,22 @@ Dropmail.prototype.createSession = function(options, callback) {
  */
 
 Dropmail.prototype.persistSession = function(authorization) {
-  cookies(sessionKey, JSON.stringify(authorization), this.options.session);
+  var data = {
+    key: authorization.get('key'),
+    expires_at: authorization.get('expires_at'),
+    organization: {
+      id:   authorization.get('organization').get('id'),
+      name: authorization.get('organization').get('name')
+    },
+    user: {
+      id:    authorization.get('user').get('id'),
+      name:  authorization.get('user').get('name'),
+      email: authorization.get('user').get('email')
+    }
+  };
+
+  cookies(sessionKey, JSON.stringify(data), { expires: 3600 });
+
   this.authenticate(authorization);
   this.session = this.session || new this.Authorization();
   this.session.set(authorization);
