@@ -146,7 +146,10 @@ Dropmail.prototype.endSession = function(err) {
 
 Dropmail.prototype._resumeSession = function() {
   var authorization;
-  try { authorization = JSON.parse(cookies(sessionKey)); } catch(e) {}
+  try {
+    authorization = JSON.parse(cookies(sessionKey));
+    this.credentials = { key: authorization.key };
+  } catch(e) {}
   return authorization && new this.Authorization(authorization);
 };
 
