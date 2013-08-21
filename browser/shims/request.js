@@ -1,10 +1,3 @@
-
-/**
- * Module dependencies.
- */
-
-require('js-base64');
-
 /**
  * Browser shim for mikael/request
  */
@@ -24,7 +17,7 @@ module.exports = function(options, callback) {
       , beforeSend: function (xhr) {
           var auth = options.auth;
           if (auth) {
-            var basic = Base64.encode(auth.username + ':' + auth.password);
+            var basic = Buffer(auth.username + ':' + auth.password).toString('base64');
             xhr.setRequestHeader('Authorization', 'Basic ' + basic);
           }
       }
