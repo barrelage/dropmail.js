@@ -84,6 +84,7 @@ Dropmail.prototype.createSession = function(options, callback) {
 
   var defaults = helper.merge({ ttl: 3600 }, options)
     , attrs = helper.merge(defaults, options);
+
   this.Authorization.save(attrs, this._handleSession.bind(this, callback));
 
   return this;
@@ -98,27 +99,34 @@ Dropmail.prototype.createSession = function(options, callback) {
  * @api public
  */
 
-Dropmail.prototype.persistSession = function(authorization) {
+Dropmail.prototype.persistSession = function(auth) {
+  var user = auth.get('user')
+    , organization  = auth.get('organization');
+
   var data = {
-    key: authorization.get('key'),
-    expires_at: authorization.get('expires_at'),
-    organization: {
-      id:   authorization.get('organization').get('id'),
-      name: authorization.get('organization').get('name')
-    },
+    key: auth.get('key'),
+    expires_at: auth.get('expires_at'),
+    organization: { },
     user: {
-      id:    authorization.get('user').get('id'),
-      name:  authorization.get('user').get('name'),
-      email: authorization.get('user').get('email')
+      id:    user.get('id'),
+      name:  user.get('name'),
+      email: user.get('email')
     }
   };
 
+  if (organization) {
+    data.organization = {
+      id: organization.get('id'),
+      name: organization.get('name')
+    };
+  }
+
   cookies(sessionKey, JSON.stringify(data), { expires: 3600 });
 
-  this.authenticate(authorization);
+  this.authenticate(auth);
   this.session = this.session || new this.Authorization();
-  this.session.set(authorization);
-  this.emit('change:session', authorization);
+  this.session.set(auth);
+  this.emit('change:session', auth);
 };
 
 
