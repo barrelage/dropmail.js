@@ -7,7 +7,6 @@ var bundler = browserify()
   .ignore('buffer')
   .require('cookies-js')
   .require('es5-shim')
-  .require('js-base64')
   .require('json2ify')
   .require('store');
 
