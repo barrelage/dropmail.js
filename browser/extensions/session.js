@@ -174,7 +174,7 @@ Dropmail.prototype._resumeSession = function() {
 Dropmail.prototype._handleSession = function(callback, err, auth) {
   if (err) {
     this.endSession();
-    if (callback) callback(err);
+    if (callback) callback(err, auth);
     return;
   }
 
