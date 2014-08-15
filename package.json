@@ -14,10 +14,10 @@
   , "keywords": []
   , "dependencies": {
       "request": "*"
+    , "cookies-js": "0.3.x"
   }
   , "devDependencies": {
       "browserify": "2.x"
-    , "cookies-js": "0.3.x"
     , "es5-shim": "2.0.x"
     , "jshint": "*"
     , "json2ify": "*"
